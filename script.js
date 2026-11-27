@@ -1,7 +1,7 @@
 const lessons = [
-  { id: "greetings", title: "Приветствия", level: "Начальный" },
-  { id: "colors", title: "Цвета", level: "Начальный" },
-  { id: "numbers", title: "Числа", level: "Начальный" },
+  { id: "greetings", title: "Приветствия", level: "Начальный", progress: 0 },
+  { id: "colors", title: "Цвета", level: "Начальный", progress: 0 },
+  { id: "numbers", title: "Числа", level: "Начальный", progress: 0 },
 ];
 
 function renderLessons(lessonData) {
@@ -24,6 +24,24 @@ function renderLessons(lessonData) {
       : "Сложность не указана";
 
     card.append(title, level);
+
+    const progressText = document.createElement("p");
+    const hasProgress = Number.isInteger(lesson.progress)
+      && lesson.progress >= 0 && lesson.progress <= 100;
+    progressText.textContent = hasProgress
+      ? `Прогресс: ${lesson.progress}%`
+      : "Прогресс пока неизвестен";
+    card.append(progressText);
+
+    if (hasProgress) {
+      const progress = document.createElement("progress");
+      progress.className = "lesson-progress";
+      progress.max = 100;
+      progress.value = lesson.progress;
+      progress.setAttribute("aria-label", `Прогресс урока «${title.textContent}»`);
+      card.append(progress);
+    }
+
     cards.append(card);
   }
 
